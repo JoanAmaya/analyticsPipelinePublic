@@ -1,0 +1,42 @@
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-top: 20px;
+}
+
+.dashboard-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  /* Más sombra para profundidad */
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;  /* Efectos al pasar el ratón */
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);  /* Efecto de elevar la tarjeta */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);  /* Aumentar sombra al pasar el ratón */
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+@media (max-width: 767px) {
+  .dashboard-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .card-title {
+    font-size: 1.25rem;
+  }
+}
