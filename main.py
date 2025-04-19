@@ -11,7 +11,7 @@ app = FastAPI()
 
 # Inicializamos Firebase Admin SDK SOLO si no está ya inicializado
 if not firebase_admin._apps:
-    cred = credentials.Certificate("marketandes2025-firebase-adminsdk-fbsvc-9e5f857614.json")
+    cred = credentials.Certificate("marketandes2025-firebase-adminsdk-fbsvc-89a1f23edf.json")
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
