@@ -59,7 +59,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h1 className="dashboard-title">Dashboard de Métricas</h1>
+      <h1 className="dashboard-title">Dashboard de Métricas MarketAndes</h1>
 
       <div className="dashboard-grid">
         <div className="dashboard-card">
