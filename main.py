@@ -78,6 +78,27 @@ async def get_metrics():
     reviews_docs = reviews_ref.stream()
     ratings = [doc.to_dict().get("rating") for doc in reviews_docs if doc.to_dict().get("rating") is not None]
 
+    # Chats
+    chats_ref = db.collection("chatsFlutter")
+    chats_docs = chats_ref.stream()
+    now = datetime.datetime.now(datetime.timezone.utc)
+    chats_days_data = []
+
+    for doc in chats_docs:
+        data = doc.to_dict()
+        razon = data.get("Razon", "Sin razón")
+        time_begin = data.get("timeBegin")
+
+        dias = None
+        if isinstance(time_begin, datetime.datetime):
+            diferencia = now - time_begin
+            dias = diferencia.days
+
+        chats_days_data.append({
+            "razon": razon,
+            "dias_desde_ultima_interaccion": dias
+        })
+
     return {
         "purchase": {
             "elapsed_times": elapsed_times,
@@ -91,5 +112,6 @@ async def get_metrics():
         },
         "reviews": {
             "ratings": ratings
-        }
+        },
+        "chats": chats_days_data
     }

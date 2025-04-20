@@ -51,6 +51,12 @@ const Dashboard = () => {
     tiempo: data.purchase.elapsed_times[i]
   })).filter(d => d.timestamp);
 
+
+  const chatsData = data.chats.map(chat => ({
+    razon: chat.razon,
+    dias_desde_ultima_interaccion: chat.dias_desde_ultima_interaccion
+  }));
+
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Dashboard de Métricas</h1>
@@ -195,7 +201,46 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="dashboard-card full-width">
+
+
+        <div className="dashboard-card">
+          <h3>Días desde la última interacción en conversaciones sin acuerdo finalizado</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chatsData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#2a2f3b" />
+              <XAxis dataKey="razon" stroke="#ccc" tickFormatter={(tick) => tick.substring(0, 10)} />
+              <YAxis stroke="#ccc" />
+              <Tooltip
+              cursor={false}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div style={{
+                        backgroundColor: '#1e2a3d',
+                        borderRadius: '12px',
+                        padding: '10px 14px',
+                        color: '#fff',
+                        boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+                        fontFamily: 'Segoe UI, sans-serif',
+                      }}>
+                        <p style={{ margin: 0, fontSize: '0.9rem', color: '#bbb' }}>{payload[0].payload.razon}</p>
+                        <p style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold', color: '#FF8042' }}>
+                          Días: {payload[0].value}
+                        </p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Bar dataKey="dias_desde_ultima_interaccion" fill="#FF8042" radius={[8, 8, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+
+
+        <div className="dashboard-card">
           <h3>Distribución de Calificaciones</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={ratingsData}>
