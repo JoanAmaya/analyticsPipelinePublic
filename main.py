@@ -10,7 +10,7 @@ app = FastAPI()
 # CORS para permitir acceso desde el frontend React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Puedes restringir esto al dominio de tu frontend
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

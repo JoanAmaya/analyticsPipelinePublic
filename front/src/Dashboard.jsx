@@ -103,7 +103,7 @@ const Dashboard = () => {
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={comprasEnTiempo}>
               <CartesianGrid strokeDasharray="3 3" stroke="#2a2f3b" />
-              <XAxis dataKey="timestamp" stroke="#ccc" tickFormatter={(tick) => tick.split("T")[0]} />
+              <XAxis dataKey="timestamp" stroke="#ccc" tick={false} />
               <YAxis stroke="#ccc" />
               <Tooltip
                 content={({ active, payload, label }) => {
@@ -126,7 +126,7 @@ const Dashboard = () => {
                       }}>
                         <p style={{ margin: 0, fontSize: '0.9rem', color: '#bbb' }}>{fechaFormateada}</p>
                         <p style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold', color: '#FFBB28' }}>
-                          Tiempo: {payload[0].value}
+                          Tiempo: {payload[0].value} minutos
                         </p>
                       </div>
                     );
@@ -138,6 +138,11 @@ const Dashboard = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
+
+
+
+
+
 
         <div className="dashboard-card">
           <h3>Logins por Plataforma</h3>
@@ -206,7 +211,7 @@ const Dashboard = () => {
         <div className="dashboard-card">
           <h3>Días desde la última interacción en conversaciones sin acuerdo finalizado</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chatsData}>
+            <BarChart data={chatsData.filter(item => item.dias_desde_ultima_interaccion > 0)}>
               <CartesianGrid strokeDasharray="3 3" stroke="#2a2f3b" />
               <XAxis dataKey="razon" stroke="#ccc" tickFormatter={(tick) => tick.substring(0, 10)} />
               <YAxis stroke="#ccc" />
@@ -241,13 +246,15 @@ const Dashboard = () => {
 
 
         <div className="dashboard-card">
-          <h3>Distribución de Calificaciones</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={ratingsData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2a2f3b" />
-              <XAxis dataKey="rating" stroke="#ccc" />
-              <YAxis stroke="#ccc" />
-              <Tooltip
+          <h3>Distribución de Calificaciones para el proceso de compra</h3>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <ResponsiveContainer width="75%" height={300}>
+              <BarChart data={ratingsData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#2a2f3b" />
+                <XAxis dataKey="rating" stroke="#ccc" />
+                <YAxis stroke="#ccc" />
+                <Tooltip
               cursor={false}
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
@@ -271,10 +278,35 @@ const Dashboard = () => {
                   return null;
                 }}
               />
-              <Bar dataKey="count" fill="#8884d8" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+                <Bar dataKey="count" fill="#8884d8" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+
+            <div style={{
+              backgroundColor: '#1e2a3d',
+              padding: '20px',
+              borderRadius: '12px',
+              color: '#fff',
+              minWidth: '20%',
+              marginLeft: '20px',
+              boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+              textAlign: 'center',
+              fontFamily: 'Segoe UI, sans-serif',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <span style={{ fontSize: '0.9rem', color: '#bbb' }}>Promedio</span>
+              <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#00C49F' }}>
+                {
+                  (data.reviews.ratings.reduce((acc, val) => acc + val, 0) / data.reviews.ratings.length).toFixed(2)
+                }
+              </span>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   );
