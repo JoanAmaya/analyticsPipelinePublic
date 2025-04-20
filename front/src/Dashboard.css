@@ -1,42 +1,48 @@
+body {
+  margin: 0;
+  background-color: #0e1a2b;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  color: #e4e8f0;
+}
+
+.dashboard-container {
+  padding: 2rem;
+}
+
 .dashboard-title {
+  text-align: center;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #333;
-  margin-top: 20px;
+  color: #00c2ff;
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem;
 }
 
 .dashboard-card {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  /* Más sombra para profundidad */
-  border: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;  /* Efectos al pasar el ratón */
+  background-color: #16263a;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
-.dashboard-card:hover {
-  transform: translateY(-5px);  /* Efecto de elevar la tarjeta */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);  /* Aumentar sombra al pasar el ratón */
+.dashboard-card h3 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
 }
 
-.card-title {
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.loading {
+  color: #ffffff;
+  text-align: center;
+  padding-top: 5rem;
   font-size: 1.5rem;
-  font-weight: 600;
-  color: #555;
-  margin-bottom: 15px;
-}
-
-.card-body {
-  padding: 20px;
-}
-
-@media (max-width: 767px) {
-  .dashboard-title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 575px) {
-  .card-title {
-    font-size: 1.25rem;
-  }
 }
