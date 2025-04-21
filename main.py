@@ -98,6 +98,23 @@ async def get_metrics():
             "razon": razon,
             "dias_desde_ultima_interaccion": dias
         })
+    # Chats Cerrados
+    # Chats Cerrados: calcular duración real entre apertura y cierre
+    chats_cerrados_ref = db.collection("chatsCerrados")
+    chats_cerrados_docs = chats_cerrados_ref.stream()
+
+    chats_cerrados_data = []
+    for doc in chats_cerrados_docs:
+        data = doc.to_dict()
+        time_opened = data.get("timeOpened")
+        time_closed = data.get("timeClosed")
+
+        if isinstance(time_opened, datetime.datetime) and isinstance(time_closed, datetime.datetime):
+            duracion = (time_closed - time_opened).total_seconds() / 60  # duración en minutos
+            chats_cerrados_data.append({
+                "chat_id": data.get("chatId", "")[:6] + "...",
+                "duracion_min": round(duracion, 2)  
+            })
 
     return {
         "purchase": {
@@ -113,5 +130,6 @@ async def get_metrics():
         "reviews": {
             "ratings": ratings
         },
-        "chats": chats_days_data
+        "chats": chats_days_data,
+        "chats_cerrados": chats_cerrados_data
     }
