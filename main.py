@@ -133,3 +133,55 @@ async def get_metrics():
         "chats": chats_days_data,
         "chats_cerrados": chats_cerrados_data
     }
+
+
+@app.get("/favoritos-promedio-compra")
+async def favoritos_promedio_compra():
+    # Obtener todos los usuarios
+    users_ref = db.collection("users")
+    users_docs = users_ref.stream()
+
+    # Diccionario para guardar la cantidad de favoritos por usuario
+    uid_to_favoritos_count = {}
+
+    for doc in users_docs:
+        data = doc.to_dict()
+        uid = data.get("uid")
+        favoritos = data.get("favoritos", [])
+        if isinstance(favoritos, list):
+            uid_to_favoritos_count[uid] = len(favoritos)
+        else:
+            uid_to_favoritos_count[uid] = 0  # Si no tiene lista, se asume 0 favoritos
+
+    # Obtener todos los tiempos de compra
+    purchase_ref = db.collection("purchaseTime")
+    purchase_docs = purchase_ref.stream()
+
+    # Agrupar tiempos de compra por cantidad de favoritos
+    favoritos_to_elapsed_times = {}
+
+    for doc in purchase_docs:
+        data = doc.to_dict()
+        uid = data.get("uid")
+        elapsed = data.get("elapsedTime")
+        if uid is None or elapsed is None:
+            continue
+
+        count_favoritos = uid_to_favoritos_count.get(uid)
+        if count_favoritos is None:
+            continue  # No se encuentra el usuario o no tiene favoritos
+
+        if count_favoritos not in favoritos_to_elapsed_times:
+            favoritos_to_elapsed_times[count_favoritos] = []
+
+        favoritos_to_elapsed_times[count_favoritos].append(elapsed)
+
+    # Calcular promedio para cada cantidad de favoritos
+    resultado = {}
+    for count, times in favoritos_to_elapsed_times.items():
+        if times:
+            promedio = sum(times) / len(times)
+            resultado[count] = round(promedio, 2)
+
+    return resultado
+
